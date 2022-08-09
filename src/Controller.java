@@ -30,13 +30,15 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void load() throws IOException {
+    public void load() {
         File file = fileChooser.showOpenDialog(stage);
-        if(file != null){
-            for(String line : Files.readAllLines(file.toPath())){
-                System.out.println(line);
+        try {
+            if (file != null) {
+                ImageManager.computeImage(file);
+                saveMenuItem.setDisable(false);
             }
-            saveMenuItem.setDisable(false);
+        } catch(IOException e){
+
         }
     }
 
