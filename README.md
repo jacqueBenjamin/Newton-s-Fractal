@@ -1,1 +1,1 @@
-# Newton-s-Fractal
+# Newton's Fractal
