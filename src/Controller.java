@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -22,6 +23,7 @@ public class Controller implements Initializable {
     private FileChooser saveFileChooser;
     @FXML
     private ImageView imageView;
+    private Image image;
     @FXML
     private MenuItem saveMenuItem;
     @FXML
@@ -50,7 +52,7 @@ public class Controller implements Initializable {
         File file = loadFileChooser.showOpenDialog(stage);
 //        try {
             if (file != null) {
-                Image image = ImageManager.computeImage(file);
+                image = ImageManager.computeImage(file);
                 imageView.setImage(image);
                 saveMenuItem.setDisable(false);
             }
@@ -62,12 +64,18 @@ public class Controller implements Initializable {
     @FXML
     public void save() {
         File file = saveFileChooser.showSaveDialog(stage);
-        if (file != null) {
-            try {
-                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(imageView.getImage(), null);
-                ImageIO.write(bufferedImage, "jpg", file);
-            } catch(IOException e){
-                createAlert("IOException", "There was a problem saving the image");
+        if (file != null && file.getName().indexOf('.') != -1) {
+            String extension = file.getName().substring(file.getName().indexOf('.'));
+            if(extension.equals(".jpg") || extension.equals(".png")) {
+                try {
+                    BufferedImage awtImage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, awtImage);
+                    ImageIO.write(bufferedImage, extension.substring(1), file);
+                } catch (IOException e) {
+                    createAlert("IOException", "There was a problem saving the image");
+                }
+            } else {
+                createAlert("User Error", "The file type must be either .jpg or .png");
             }
         }
     }
