@@ -1,4 +1,6 @@
 *.txt
+*.png
+*.jpg
 # Compiled class file
 *.class
 
