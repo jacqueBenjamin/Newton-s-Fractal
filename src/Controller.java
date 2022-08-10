@@ -1,15 +1,14 @@
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -19,10 +18,14 @@ public class Controller implements Initializable {
     private ImageView imageView;
     @FXML
     private MenuItem saveMenuItem;
+    @FXML
+    private AnchorPane imageContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fileChooser = new FileChooser();
+        imageView.fitWidthProperty().bind(imageContainer.widthProperty());
+        imageView.fitHeightProperty().bind(imageContainer.heightProperty());
     }
 
     public void setStage(Stage stage) {
@@ -32,14 +35,15 @@ public class Controller implements Initializable {
     @FXML
     public void load() {
         File file = fileChooser.showOpenDialog(stage);
-        try {
+//        try {
             if (file != null) {
-                ImageManager.computeImage(file);
+                Image image = ImageManager.computeImage(file);
+                imageView.setImage(image);
                 saveMenuItem.setDisable(false);
             }
-        } catch(IOException e){
-
-        }
+//        } catch(IOException e){
+//
+//        }
     }
 
     @FXML
