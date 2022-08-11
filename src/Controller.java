@@ -94,6 +94,9 @@ public class Controller implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * creates a window that describes the program's functions
+     */
     @FXML
     public void about() {
         Alert aboutBox = new Alert(Alert.AlertType.INFORMATION);
