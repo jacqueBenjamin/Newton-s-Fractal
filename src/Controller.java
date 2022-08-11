@@ -49,9 +49,9 @@ public class Controller implements Initializable {
 
     @FXML
     public void load() {
-        File file = loadFileChooser.showOpenDialog(stage);
+        File file = null;//loadFileChooser.showOpenDialog(stage);
 //        try {
-        if (file != null) {
+        if (file == null) {
             image = ImageManager.computeImage(file);
             imageView.setImage(image);
             saveMenuItem.setDisable(false);

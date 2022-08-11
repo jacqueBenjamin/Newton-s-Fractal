@@ -1,6 +1,6 @@
 public class ComplexNum {
-    private double real;
-    private double imaginary;
+    private final double real;
+    private final double imaginary;
 
     public ComplexNum(double real, double imaginary){
         this.real = real;
@@ -34,8 +34,14 @@ public class ComplexNum {
         return new ComplexNum(temp.real/divisionFactor, temp.imaginary/divisionFactor);
     }
 
+    public static double distance(ComplexNum num1, ComplexNum num2){
+        double realDiff = num1.real - num2.real;
+        double imaginaryDiff = num1.imaginary - num2.imaginary;
+        return Math.sqrt(realDiff*realDiff + imaginaryDiff*imaginaryDiff);
+    }
+
     @Override
     public String toString(){
-        return real + " + " + imaginary;
+        return real + " + " + imaginary + "i";
     }
 }
