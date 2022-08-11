@@ -7,6 +7,11 @@ import java.io.File;
 import java.util.List;
 
 public class ImageManager {
+    private static int width;
+    private static int height;
+    private static ComplexNum BottomLeft;
+    private static ComplexNum TopRight;
+    private static int steps;
     private static List<ComplexNum> roots;
     private static List<Color> colors;
 
