@@ -24,6 +24,7 @@ public class ImageManager {
             for(int y = 0; y < height; y++){
                 pw.setColor(x, y, computePixel(x, y));
             }
+            System.out.println((double)x/width);
         }
         return image;
     }
