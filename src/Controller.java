@@ -32,7 +32,6 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(Arrays.toString(ImageIO.getWriterFormatNames()));
         extensions = Arrays.stream(ImageIO.getWriterFormatNames()).map(s -> "." + s).collect(Collectors.toList());
         loadFileChooser = new FileChooser();
         FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
