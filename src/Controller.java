@@ -2,7 +2,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +14,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class Controller implements Initializable {
     private Stage stage;
@@ -25,18 +27,20 @@ public class Controller implements Initializable {
     private ImageView imageView;
     private Image image;
     @FXML
-    private Button saveMenuItem;
-    @FXML
     private AnchorPane imageContainer;
+    private List<String> extensions;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println(Arrays.toString(ImageIO.getWriterFormatNames()));
+        extensions = Arrays.stream(ImageIO.getWriterFormatNames()).map(s -> "." + s).collect(Collectors.toList());
         loadFileChooser = new FileChooser();
         FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
         loadFileChooser.getExtensionFilters().add(textFilter);
 
         saveFileChooser = new FileChooser();
-        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image files (*.png), (*.jpg)", "*.png", "*.jpg");
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image files",
+                extensions.stream().map(s -> "*" + s).collect(Collectors.toList()));
         saveFileChooser.getExtensionFilters().add(imageFilter);
 
         imageView.fitWidthProperty().bind(imageContainer.widthProperty());
@@ -54,7 +58,6 @@ public class Controller implements Initializable {
         if (file == null) {
             image = ImageManager.computeImage(file);
             imageView.setImage(image);
-            saveMenuItem.setDisable(false);
         }
 //        } catch(IOException e){
 //
@@ -63,19 +66,21 @@ public class Controller implements Initializable {
 
     @FXML
     public void save() {
-        File file = saveFileChooser.showSaveDialog(stage);
-        if (file != null && file.getName().indexOf('.') != -1) {
-            String extension = file.getName().substring(file.getName().indexOf('.'));
-            if (extension.equals(".jpg") || extension.equals(".png")) {
-                try {
-                    BufferedImage awtImage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.TYPE_INT_RGB);
-                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, awtImage);
-                    ImageIO.write(bufferedImage, extension.substring(1), file);
-                } catch (IOException e) {
-                    createAlert("IOException", "There was a problem saving the image");
+        if(image != null) {
+            File file = saveFileChooser.showSaveDialog(stage);
+            if (file != null && file.getName().indexOf('.') != -1) {
+                String extension = file.getName().substring(file.getName().indexOf('.'));
+                if (extensions.contains(extension)) {
+                    try {
+                        BufferedImage awtImage = new BufferedImage((int) image.getWidth(), (int) image.getHeight(), BufferedImage.TYPE_INT_RGB);
+                        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, awtImage);
+                        ImageIO.write(bufferedImage, extension.substring(1), file);
+                    } catch (IOException e) {
+                        createAlert("IOException", "There was a problem saving the image");
+                    }
+                } else {
+                    createAlert("User Error", "The file type must an image file type\n" + extensions);
                 }
-            } else {
-                createAlert("User Error", "The file type must be either .jpg or .png");
             }
         }
     }

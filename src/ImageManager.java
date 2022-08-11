@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImageManager {
-    private static int width = 2560;
-    private static int height = 1440;
+    private static int width = 1280;
+    private static int height = 720;
     private static ComplexNum BottomLeft = new ComplexNum(-4, -2.25);
     private static ComplexNum TopRight = new ComplexNum(4, 2.25);
-    private static int steps = 50;
+    private static int steps = 100;
     private static List<ComplexNum> roots;
     private static List<Color> colors;
 

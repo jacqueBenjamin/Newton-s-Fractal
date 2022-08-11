@@ -11,9 +11,9 @@
       <MenuBar prefHeight="25.33333" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#load" style="-fx-background-color: transparent;" text="Load File" />
-            <Button fx:id="saveMenuItem" disable="true" mnemonicParsing="false" onAction="#save" style="-fx-background-color: transparent;" text="Save Image" />
-            <Button mnemonicParsing="false" onAction="#about" style="-fx-background-color: transparent;" text="About" />
+            <Button  mnemonicParsing="false" onAction="#load" style="-fx-background-color: transparent;" text="Load File" />
+            <Button  mnemonicParsing="false" onAction="#save" style="-fx-background-color: transparent;" text="Save Image" />
+            <Button  mnemonicParsing="false" onAction="#about" style="-fx-background-color: transparent;" text="About" />
          </children>
       </HBox>
       <AnchorPane fx:id="imageContainer" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
