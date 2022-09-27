@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -52,15 +54,21 @@ public class Controller implements Initializable {
 
     @FXML
     public void load() {
-        File file = null;//loadFileChooser.showOpenDialog(stage);
-//        try {
-        if (file == null) {
-            image = ImageManager.computeImage(file);
-            imageView.setImage(image);
+        File file = loadFileChooser.showOpenDialog(stage);
+        try {
+            if (file != null) {
+                image = ImageManager.computeImage(file);
+                imageView.setImage(image);
+            }
+        } catch(IOException e){
+            createAlert("IOException", "There was a problem reading the file");
+        } catch(IllegalStateException e){
+            createAlert("IllegalStateException", "There wasn't enough lines in the file");
+        } catch(NumberFormatException e){
+            createAlert("NumberFormatException", "A number was formatted incorrectly");
+        } catch(InputMismatchException e){
+            createAlert("InputMismatchException", e.getMessage());
         }
-//        } catch(IOException e){
-//
-//        }
     }
 
     @FXML

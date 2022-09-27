@@ -1,6 +1,19 @@
+import java.util.InputMismatchException;
+
 public class ComplexNum {
     private final double real;
     private final double imaginary;
+
+    public ComplexNum(String complexNum){
+        String[] arrNum = complexNum.split("\\+");
+        if(arrNum.length != 2){
+            throw new InputMismatchException("The complex number isn't in the correct format");
+        }
+        real = Double.parseDouble(arrNum[0].strip());
+        String imaginaryStr = arrNum[1].strip();
+        imaginaryStr = imaginaryStr.substring(0, imaginaryStr.length() - 1);
+        imaginary = Double.parseDouble(imaginaryStr);
+    }
 
     public ComplexNum(double real, double imaginary){
         this.real = real;

@@ -4,19 +4,22 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
 public class ImageManager {
-    private static int width = 1280;
-    private static int height = 720;
-    private static ComplexNum BottomLeft = new ComplexNum(-4, -2.25);
-    private static ComplexNum TopRight = new ComplexNum(4, 2.25);
-    private static int steps = 100;
+    private static int width;
+    private static int height;
+    private static ComplexNum BottomLeft;
+    private static ComplexNum TopRight;
+    private static int steps;
     private static List<ComplexNum> roots;
     private static List<Color> colors;
 
-    public static Image computeImage(File file) {
+    public static Image computeImage(File file) throws IOException{
         readFile(file);
         WritableImage image = new WritableImage(width, height);
         PixelWriter pw = image.getPixelWriter();
@@ -91,16 +94,42 @@ public class ImageManager {
         }
     }
 
-    private static void readFile(File file){
+    private static void readFile(File file) throws IOException {
+
+//        roots.add(new ComplexNum(-1, 0));
+//        roots.add(new ComplexNum(1, 0));
+//        roots.add(new ComplexNum(0, 1));
+//        roots.add(new ComplexNum(0, -1));
+//        colors.add(Color.valueOf("D00000"));
+//        colors.add(Color.valueOf("00D000"));
+//        colors.add(Color.valueOf("0000D0"));
+//        colors.add(Color.valueOf("D0D000"));
+        Scanner scanner = new Scanner(file);
+        String[] widthAndHeight = scanner.nextLine().split("x");
+        if(widthAndHeight.length != 2){
+            throw new InputMismatchException("The width and height isn't in the correct format");
+        }
+        width = Integer.parseInt(widthAndHeight[0].strip());
+        height = Integer.parseInt(widthAndHeight[1].strip());
+        String[] arrBLTR = scanner.nextLine().split(",");
+        if(arrBLTR.length != 2){
+            throw new InputMismatchException("The bottom-left and top-right complex numbers aren't in the correct format");
+        }
+        BottomLeft = new ComplexNum(arrBLTR[0]);
+        TopRight = new ComplexNum(arrBLTR[1]);
+        steps = Integer.parseInt(scanner.nextLine());
+        String[] strRoots = scanner.nextLine().split(",");
         roots = new ArrayList<>();
+        for(String strRoot : strRoots){
+            roots.add(new ComplexNum(strRoot));
+        }
+        String[] strColors = scanner.nextLine().split(",");
+        if(strColors.length != strRoots.length){
+            throw new InputMismatchException("The number of colors is invalid");
+        }
         colors = new ArrayList<>();
-        roots.add(new ComplexNum(-1, 0));
-        roots.add(new ComplexNum(1, 0));
-        roots.add(new ComplexNum(0, 1));
-        roots.add(new ComplexNum(0, -1));
-        colors.add(Color.valueOf("D00000"));
-        colors.add(Color.valueOf("00D000"));
-        colors.add(Color.valueOf("0000D0"));
-        colors.add(Color.valueOf("D0D000"));
+        for(String color : strColors){
+            colors.add(Color.valueOf(color.strip()));
+        }
     }
 }
